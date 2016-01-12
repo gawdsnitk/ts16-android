@@ -30,11 +30,11 @@
     <string name="drawer_close">Slider Menu Closed</string>
     <string-array name="nav_drawer_items">
         <item >Home</item>
-        <item >Competitions</item>
-        <item >Guest Lectures</item>
-        <item >Exhibitions</item>
-        <item >FunEvents</item>
-        <item >Contact Us</item>
+        <item >Find People</item>
+        <item >Photos</item>
+        <item >Communities</item>
+        <item >Pages</item>
+        <item >What\'s Hot</item>
     </string-array>
     <array name="nav_drawer_icons">
         <item>@drawable/ic_home</item>

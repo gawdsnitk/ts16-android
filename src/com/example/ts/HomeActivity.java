@@ -17,12 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.ts.adapter.NavDrawerListAdapter;
 import com.example.ts.models.NavDrawerItem;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 
 
 public class HomeActivity extends Activity {
@@ -43,8 +40,7 @@ public class HomeActivity extends Activity {
  
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
-   
-    
+ 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +58,6 @@ public class HomeActivity extends Activity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
  
-        
-    
-        
         navDrawerItems = new ArrayList<NavDrawerItem>();
  
         // adding nav drawer items to array
@@ -120,9 +113,7 @@ public class HomeActivity extends Activity {
             displayView(0);
         }
     }
-   
-   
-    
+ 
     /**
      * Slide menu item click listener
      * */
@@ -177,15 +168,15 @@ public class HomeActivity extends Activity {
 		switch (position) {
 		case 0:       fragment = new HomeFragment();
 		               break;
-		case 1:       Intent intent = new Intent(HomeActivity.this,Competitions.class);
+		case 1:       Intent intent = new Intent(HomeActivity.this,CommunityFragment.class);
                       startActivity(intent);
-		case 2:      fragment = new GuestLectures();
+		case 2:      fragment = new FindPeopleFragment();
                       break;
-		case 3:      fragment = new Exhibitions();
+		case 3:      fragment = new PagesFragment();
                       break;
-		case 4:      fragment = new ContactUs();
+		case 4:      fragment = new PhotosFragment();
                        break;
-		case 5:      fragment = new FunEvents();
+		case 5:      fragment = new WhatsHotFragment();
 		              break;
 		
 		}

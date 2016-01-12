@@ -5,7 +5,7 @@ import android.content.Intent;
 
 public final class CommonUtilities {
 	
-    static final String SERVER_URL = "http://172.16.177.227/gcm_server_php/register.php"; 
+    static final String SERVER_URL = "http://192.168.43.129/gcm_server_php/register.php"; 
 
     static final String SENDER_ID = "132975867821"; 
 
