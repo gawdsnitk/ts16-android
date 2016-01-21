@@ -7,16 +7,11 @@
         android:id="@+id/txtLabel"
          android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:paddingTop="20dp"
         android:textSize="16dp"
-        android:text="Photos View"/>
+         android:layout_marginLeft="10dp"
+                  android:layout_marginRight="10dp"
+        android:text="Apart from the technical events during Techspardha, there is also an air of joy and happiness. Informalz is one such event which pulls together huge crowds in an atmosphere of fun and happiness. Activities include Power Zorbing, Friends War and other intresting events"/>
      
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabel"
-        android:src="@drawable/ic_home"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
-     
- 
+    
 </RelativeLayout>

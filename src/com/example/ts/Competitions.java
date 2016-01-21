@@ -16,15 +16,20 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.app.ProgressDialog;
 
 import com.example.ts.adapter.BaseInflaterAdapter;
 import com.example.ts.adapter.CardItemData;
@@ -36,27 +41,53 @@ public class Competitions extends Activity implements OnItemClickListener
 	/**
 	 * Called when the activity is first created.
 	 */
+     ProgressDialog loading = null;
+     ConnectionDetector cd;
+     Boolean isInternetPresent=false;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.listview);
-
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		ListView list = (ListView)findViewById(R.id.list_view);
 		 list.setOnItemClickListener((OnItemClickListener) this);
 		list.addHeaderView(new View(this));
 		list.addFooterView(new View(this));
-
+		 cd = new ConnectionDetector(getApplicationContext());
+		loading = new ProgressDialog(this);
+		loading.setCancelable(true);
+		loading.setMessage("Please wait....");
+		loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		
+		
 		BaseInflaterAdapter<CardItemData> adapter = new BaseInflaterAdapter<CardItemData>(new CardInflater());
-		String text1="MANAGERIAL";
-		String text2="QUIZZES";
-		String text3="FUN ZONE";
-		String text4="ONLINE";
-		String text5="PAPYRUS VITAE";
-		String text6="TECHNOPOLIS";
-		String text7="DESIGN";
+		String text1="Managerial";
+		String text2="Quizzes";
+		String text3="Fun Zone";
+		String text4="Online";
+		String text5="Papyrus Vitae";
+		String text6="Technopolis";
+		String text7="Design";
+		String text8="Brain Storming";
+		String text9="Future Builder";
 		
 		
+		 isInternetPresent = cd.isConnectingToInternet();
+	        
+	        // check for Internet status
+	        if (isInternetPresent) {
+	            // Internet Connection is Present
+	            // make HTTP requests
+	           
+	        } else {
+	            // Internet connection is not present
+	            // Ask user to connect to Internet
+	            showAlertDialog(Competitions.this, "No Internet Connection",
+	                    "You don't have internet connection.", false);
+	           
+	        }
+	        
 		CardItemData data1 = new CardItemData(text1,1);
 		adapter.addItem(data1, false);
 		
@@ -80,37 +111,76 @@ public class Competitions extends Activity implements OnItemClickListener
 		CardItemData data6 = new CardItemData(text6,6);
 		adapter.addItem(data6, false);
 		CardItemData data7 = new CardItemData(text7,7);
-		adapter.addItem(data6, false);
-		
-
+		adapter.addItem(data7, false);
+		CardItemData data8 = new CardItemData(text8,7);
+		adapter.addItem(data8, false);
+		CardItemData data9 = new CardItemData(text9,7);
+		adapter.addItem(data9, false);
 		list.setAdapter(adapter);
 		
 }
+	
+	 public void showAlertDialog(Context context, String title, String message, Boolean status) {
+	        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+	 
+	        // Setting Dialog Title
+	        alertDialog.setTitle(title);
+	 
+	        // Setting Dialog Message
+	        alertDialog.setMessage(message);
+	         
+	        // Setting alert dialog icon
+	        alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
+	 
+	        // Setting OK Button
+	        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	            	 finish();
+	            }
+	            
+	        });
+	 
+	        // Showing Alert Message
+	        alertDialog.show();
+	    }
+	 
+	 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		
+		  
 		   pos=position;
-			new HttpAsyncTask().execute("http://www.techspardha.org/category_event");
-		
-		
-		
+		   Log.d("ADebugTag", "Value: " + Float.toString(pos));
+		  // Log.d("pos", pos);
+			new HttpAsyncTask().execute("http://www.techspardha.org:8081/events/eventByCategoryId");
 	}
 	
 	 private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+		 
+		 @Override
+		 protected void onPreExecute() {    
+		     // SHOW THE SPINNER WHILE LOADING FEEDS
+		    loading.show();
+		 }
+		 
 	        @Override
 	        protected String doInBackground(String... urls) {
-	             Log.i("hey","me");
-	            return POST(urls[0],pos);
+	             //Log.i("hey","me");
+	            String s=POST(urls[0],pos);
+	            //Log.i("s=",s);
+	             return s;
 	        }
 	        // onPostExecute displays the results of the AsyncTask.
 	        @Override
 	        protected void onPostExecute(String result) {
-	            Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
+	            //Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
 	          //  activity.startActivity(new Intent(activity,Events.class));
+	           // Log.i("comp","comp");
+	        	loading.dismiss();
 	            Intent intent_name = new Intent();
 	            intent_name.putExtra("rslt", result);
+	            intent_name.putExtra("value", pos);
 	            intent_name.setClass(getApplicationContext(),Events.class);
 	            startActivity(intent_name);
 	        }
@@ -121,32 +191,15 @@ public class Competitions extends Activity implements OnItemClickListener
 	       InputStream inputStream = null;
 	       String result = "";
 	       try {
-
+           //Log.i("here","threr");
 	           HttpClient httpclient = new DefaultHttpClient();
 	           HttpPost httpPost = new HttpPost(url);
-
-	           // 3. build jsonObject
-	           // 4. convert JSONObject to JSON to String
-	           // 5. set json to StringEntity
-	           // 6. set httpPost Entity
-
-
 	           List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-	           nameValuePairs.add(new BasicNameValuePair("category_id",Integer.toString(pos)));
+	           nameValuePairs.add(new BasicNameValuePair("categoryId",Integer.toString(pos)));
 	           httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-	           // 7. Set some headers to inform server about the type of the content
 	           httpPost.setHeader("Accept", "application/json");
-	           //httpPost.setHeader("Content-type", "application/json");
-	//removed because the request's content type is not json
-                
-	           // 8. Execute POST request to the given URL
 	           HttpResponse httpResponse = httpclient.execute(httpPost);
-
-	           // 9. receive response as inputStream
 	           inputStream = httpResponse.getEntity().getContent();
-
-	           // 10. convert inputstream to string
 	           if(inputStream != null)
 	               result = convertInputStreamToString(inputStream);
 	           else
@@ -155,10 +208,7 @@ public class Competitions extends Activity implements OnItemClickListener
 	       } catch (Exception e) {
 	           Log.d("InputStream", e.getLocalizedMessage());
 	       }
-	     Log.i("surbhi",result);
-	     
-	     
-	       // 11. return result
+	     //Log.i("surbhi",result);
 	       return result;
 	   }
 	 
@@ -168,11 +218,22 @@ public class Competitions extends Activity implements OnItemClickListener
 	        String result = "";
 	        while((line = bufferedReader.readLine()) != null)
 	            result += line;
-	 
 	        inputStream.close();
-	        
-	        Log.i("surbhi234",result);
 	        return result;
 	 
 	    }   
+	 
+	 public boolean onOptionsItemSelected(MenuItem item) {
+	     switch (item.getItemId()) {
+	     // Respond to the action bar's Up/Home button
+	     case android.R.id.home:
+	        //NavUtils.navigateUpFromSameTask(this);
+	    	// Intent i=new Intent(Competitions.this,HomeActivity.class);
+	    	 //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    	// startActivity(i);
+	    	 finish();
+	         	    	 return true;
+	     }
+	     return super.onOptionsItemSelected(item);
+	 }
 }

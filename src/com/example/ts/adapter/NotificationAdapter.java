@@ -24,13 +24,13 @@ public class NotificationAdapter extends CursorAdapter {
 	  public void bindView(View view, Context context, Cursor cursor) {
 	     
 	      TextView Noti = (TextView) view.findViewById(R.id.noti);
-	      TextView Id = (TextView) view.findViewById(R.id.Iid);
+	     
 	     
 	      String n = cursor.getString(cursor.getColumnIndexOrThrow("notification"));
 	      int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
 	    
 	      Noti.setText(n);
-	      Id.setText(String.valueOf(id));
+	     
 	  }
 
 	}

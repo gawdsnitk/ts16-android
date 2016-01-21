@@ -92,6 +92,10 @@ public class SessionManager {
     {
     	return pref.getString(KEY_LOG, null);
     }
+    public String getname()
+    {
+    	return pref.getString(KEY_NAME, null);
+    }
     public void logoutUser(){
         // Clearing all data from Shared Preferences
         editor.clear();

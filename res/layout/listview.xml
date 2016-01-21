@@ -5,16 +5,16 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="#E0EEEE">
+	android:background="#FFFFFF">
 
 	<ListView
 		android:id="@+id/list_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		
-		android:footerDividersEnabled="true"
+		android:footerDividersEnabled="false"
 		android:listSelector="@android:color/transparent"
 		android:cacheColorHint="@android:color/transparent"
 		android:divider="@null"
-		android:dividerHeight="10dp" />
+		android:dividerHeight="0dp" />
 </LinearLayout>

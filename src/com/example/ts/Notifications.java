@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,7 +35,7 @@ public class Notifications extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_noti);
 		cd = new ConnectionDetector(getApplicationContext());
-		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		if (!cd.isConnectingToInternet()) {
 		
 			alert.showAlertDialog(Notifications.this,
@@ -85,4 +86,18 @@ public class Notifications extends Activity {
 		super.onDestroy();
 	}
 
+	 public boolean onOptionsItemSelected(MenuItem item) {
+	     switch (item.getItemId()) {
+	     // Respond to the action bar's Up/Home button
+	     case android.R.id.home:
+	        //NavUtils.navigateUpFromSameTask(this);
+	    	 Intent i=new Intent(Notifications.this,HomeActivity.class);
+	    	 //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    	startActivity(i);
+	    	 finish();
+	         	    	 return true;
+	     }
+	     return super.onOptionsItemSelected(item);
+	 }
+	 
 }

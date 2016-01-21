@@ -7,16 +7,14 @@
         android:id="@+id/txtLabel"
          android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:paddingTop="20dp"
+        
         android:textSize="16dp"
-        android:text="Page View"/>
-     
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabel"
-        android:src="@drawable/ic_home"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        
+        android:text="This brings to NIT Kurukshetra notable industry experts to interact and guide the students. These interactions bring together students to work towards a better tomorrow. Notable speakers from last year include Mr Shailesh Rao, former MD, Google India; Mrs Ihitashri Shandilya, former CEO, Mithilasmita.com and many others."/>
+    
      
  
 </RelativeLayout>

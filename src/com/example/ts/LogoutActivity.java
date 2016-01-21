@@ -1,6 +1,9 @@
 package com.example.ts;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
@@ -19,6 +22,8 @@ import com.google.android.gms.plus.Plus.PlusOptions;
 public class LogoutActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener{
 	Button logout;
 	SessionManager session2;
+	ConnectionDetector cd;
+	Boolean isInternetPresent=false;
 	private static final int SIGN_IN_REQUEST_CODE = 10;
 	   private static final int ERROR_DIALOG_REQUEST_CODE = 11;
 	   // For communicating with Google APIs
@@ -32,16 +37,35 @@ public class LogoutActivity extends Activity implements ConnectionCallbacks, OnC
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 	  super.onCreate(savedInstanceState);
-	  setContentView(R.layout.activity_logout);
+	 // setContentView(R.layout.activity_logout);
 	  session2 = new SessionManager(getApplicationContext()); 
-	  logout = (Button) findViewById(R.id.logoutButton);
-	  mGoogleApiClient = buildGoogleAPIClient();
-	  logout.setOnClickListener(new OnClickListener() {
+	  cd = new ConnectionDetector(getApplicationContext());
+	  isInternetPresent = cd.isConnectingToInternet();
+	          
+	          // check for Internet status
+	          if (isInternetPresent) {
+	              // Internet Connection is Present
+	              // make HTTP requests
+	             
+	          } else {
+	              // Internet connection is not present
+	              // Ask user to connect to Internet
+	              showAlertDialog(LogoutActivity.this, "No Internet Connection",
+	                      "You don't have internet connection.", false);
+	             
+	          }
+	          
+	 // logout = (Button) findViewById(R.id.logoutButton);
+	  mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+	            .addOnConnectionFailedListener(this)
+	            .addApi(Plus.API, PlusOptions.builder().build())
+	            .addScope(Plus.SCOPE_PLUS_LOGIN).build();//buildGoogleAPIClient();
+	  /*logout.setOnClickListener(new OnClickListener() {
 
 	   @Override
 	   public void onClick(View v) {
-		   
-		   if(session2.getlog()=="1")
+		   */
+		   if(session2.getlog().equals("1"))
 		   {
 	    if (MainActivity2.currentSession != null) {
 	     MainActivity2.currentSession.closeAndClearTokenInformation();
@@ -52,14 +76,37 @@ public class LogoutActivity extends Activity implements ConnectionCallbacks, OnC
 	     startActivity(i);
 	     finish();
 		   }
-		   else if(session2.getlog()=="2")
+	/*	   else if(session2.getlog().equals("2"))
 		   {
 			   processSignOut();
 		   }
-		  
-	   }
-	  });
+		*/  
+	 //  }
+	 // });
 	 }
+	 public void showAlertDialog(Context context, String title, String message, Boolean status) {
+	        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+	 
+	        // Setting Dialog Title
+	        alertDialog.setTitle(title);
+	 
+	        // Setting Dialog Message
+	        alertDialog.setMessage(message);
+	         
+	        // Setting alert dialog icon
+	        alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
+	 
+	        // Setting OK Button
+	        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	            	 finish();
+	            }
+	            
+	        });
+	 
+	        // Showing Alert Message
+	        alertDialog.show();
+	    }
 	 private GoogleApiClient buildGoogleAPIClient() {
 	      return new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
 	            .addOnConnectionFailedListener(this)
@@ -72,6 +119,7 @@ public class LogoutActivity extends Activity implements ConnectionCallbacks, OnC
 	      super.onStart();
 	      // make sure to initiate connection
 	      mGoogleApiClient.connect();
+	      
 	   }
 	 
 	   @Override
@@ -137,8 +185,12 @@ public class LogoutActivity extends Activity implements ConnectionCallbacks, OnC
 		   @Override
 		   public void onConnected(Bundle connectionHint) {
 		      mSignInClicked = false;
-		      Toast.makeText(getApplicationContext(), "Signed In Successfully",
-		            Toast.LENGTH_LONG).show();
+		    //  Toast.makeText(getApplicationContext(), "Signed In Successfully",
+		     //       Toast.LENGTH_LONG).show();
+		   //   if(session2.getlog().equals("2"))
+			//   {
+				   processSignOut();
+			//   }
 		 
 		   }
 		   private void processSignInError() {

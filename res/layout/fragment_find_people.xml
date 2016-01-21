@@ -7,16 +7,12 @@
         android:id="@+id/txtLabel"
          android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:paddingTop="20dp"
         android:textSize="16dp"
-        android:text="FindPeople View"/>
-     
-    <ImageView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtLabel"
-        android:src="@drawable/ic_home"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Exhibition at Techspardha witnesses a huge gathering of engineering students, alumni, industrial and academic experts. Students come to witness exhibits and also present their own ideas in front of biggest names of engineering community. The various exhibitors include BRAHMOS, A-SET, etc."/>
+    
      
  
 </RelativeLayout>

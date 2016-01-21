@@ -1,18 +1,25 @@
 package com.example.ts;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -22,8 +29,8 @@ import com.google.android.gms.plus.model.people.Person;
 
 public class MidActivity extends Activity implements OnClickListener, ConnectionCallbacks, OnConnectionFailedListener {
 	SessionManager session2;
-	Button facebook;
-	SignInButton google;
+	ImageView g,fb;
+
 
 private static final int SIGN_IN_REQUEST_CODE = 10;
 private static final int ERROR_DIALOG_REQUEST_CODE = 11;
@@ -31,22 +38,88 @@ private GoogleApiClient mGoogleApiClient;
 private boolean mSignInClicked;
 private boolean mIntentInProgress;
 private ConnectionResult mConnectionResult;
+ConnectionDetector cd;
+Boolean isInternetPresent=false;
 	String userName,userEmail,result;
-	
+	 Animation animFadein,slide,fade_in;
+	 TextView txtMessage;
+	 ImageView im;
+	 Button b1,b2;
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 	  super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mid);
-		
+		Log.i("cvd","mid activity");
+		 cd = new ConnectionDetector(getApplicationContext());
 	  session2 = new SessionManager(getApplicationContext());
-	  google=(SignInButton)findViewById(R.id.signin);	  
-	  facebook=(Button)findViewById(R.id.loginButton);	  
-		google.setOnClickListener(this);
-		facebook.setOnClickListener(this);
+	  g=(ImageView)findViewById(R.id.g);	  
+	  fb=(ImageView)findViewById(R.id.fb);	  
+		g.setOnClickListener(this);
+		fb.setOnClickListener(this);
+		txtMessage = (TextView) findViewById(R.id.txt);
+        slide = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_up); 
+        fade_in = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fade_in); 
+        
+      isInternetPresent = cd.isConnectingToInternet();
+        
+        // check for Internet status
+        if (isInternetPresent) {
+            // Internet Connection is Present
+            // make HTTP requests
+           
+        } else {
+            // Internet connection is not present
+            // Ask user to connect to Internet
+            showAlertDialog(MidActivity.this, "No Internet Connection",
+                    "You don't have internet connection.", false);
+           
+        }
+        
+        im=(ImageView) findViewById(R.id.imgLogo);
+      //  g=(ImageView) findViewById(R.id.g);
+       // fb=(ImageView) findViewById(R.id.fb);
+//    	g.setOnClickListener(this);
+      //  fb.setOnClickListener(this);
 		 mGoogleApiClient = buildGoogleAPIClient();
+		// g.startAnimation(fade_in);	
+      	//fb.startAnimation(fade_in);	 
+		
+		 new Handler().postDelayed(new Runnable() {
+	            @Override
+	            public void run() {
+	            	im.startAnimation(slide); 
+	                 
+	            }
+	        }, 1000); 
 
 	 }
 	 
+	 public void showAlertDialog(Context context, String title, String message, Boolean status) {
+	        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+	 
+	        // Setting Dialog Title
+	        alertDialog.setTitle(title);
+	 
+	        // Setting Dialog Message
+	        alertDialog.setMessage(message);
+	         
+	        // Setting alert dialog icon
+	        alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
+	 
+	        // Setting OK Button
+	        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	            	 finish();
+	            }
+	            
+	        });
+	 
+	        // Showing Alert Message
+	        alertDialog.show();
+	    }
+
 	 private GoogleApiClient buildGoogleAPIClient() {
 	      return new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
 	            .addOnConnectionFailedListener(this)
@@ -65,18 +138,18 @@ private ConnectionResult mConnectionResult;
 	   protected void onStop() {
 	      super.onStop();
 	      // disconnect api if it is connected
-	      if (mGoogleApiClient.isConnected())
-	         mGoogleApiClient.disconnect();
+	    //  if (mGoogleApiClient.isConnected())
+	      //   mGoogleApiClient.disconnect();
 	   }
 	 
 	 
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.signin:
+			case R.id.g:
 				processSignIn();
 		         break;
-			case R.id.loginButton:
+			case R.id.fb:
 				Intent i2=new Intent(MidActivity.this,MainActivity2.class);
 				startActivity(i2);
 				finish();

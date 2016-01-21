@@ -3,7 +3,8 @@
     package="com.example.ts"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
+   
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
@@ -34,8 +35,8 @@
       
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/icon"
+        android:label="Techspardha"
         android:theme="@style/AppTheme" >
         
     <meta-data
@@ -44,7 +45,8 @@
         
         <activity
             android:name=".StartActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,55 +55,81 @@
         </activity>
         <activity
             android:name="com.example.ts.HomeActivity"
-            android:label="@string/app_name" >
+            android:label="Techspardha" >
+        </activity>
+        
+         <activity
+            android:name="com.example.ts.LoginSplashActivity"
+            android:label="@string/app_name" 
+             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
         <activity
             android:name="com.example.ts.Noti"
-            android:label="@string/app_name" >
+            android:label="Notifications"
+             >
         </activity>
-        
+        <activity
+            android:name="com.example.ts.New"
+            android:label="Today's Events"
+             >
+        </activity>
         <activity
             android:name="com.example.ts.DataBaseHandler"
             android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.example.ts.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         
         <activity
             android:name="com.example.ts.Async"
             android:label="@string/app_name" >
         </activity>
+         <activity
+            android:name="com.example.ts.EventsMainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
         <activity
             android:name="com.example.ts.MainActivity2"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.example.ts.MidActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" 
+            android:theme="@android:style/Theme.NoTitleBar">
+             
         </activity>
         <activity
-            android:name="com.example.ts.CommunityFragment"
-            android:label="@string/app_name" >
+            android:name="com.example.ts.Competitions"
+            android:label="Competitions"
+             >
         </activity>
          <activity
             android:name="com.example.ts.LogoutActivity"
-            android:label="@string/app_name" >
+            android:label="Logging out..."
+             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
          <activity
             android:name="com.example.ts.Notifications"
-            android:label="@string/app_name" >
+            android:label="Notifications" >
         </activity>
         
         <activity
             android:name="com.example.ts.Events"
-            android:label="@string/app_name" >
+            android:label="Events" 
+             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         
         <activity
-            android:name="com.example.ts.EventPage"
+            android:name="com.example.ts.EventsPage"
             android:label="@string/app_name" >
         </activity>
-        
-        
+        <activity android:name="com.facebook.LoginActivity"
+/>        
         
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
@@ -118,7 +146,7 @@
         </receiver>
 
         <service android:name=".GCMIntentService" />
-        
+        <meta-data android:value="@string/facebook_app_id" android:name="com.facebook.sdk.ApplicationId"/>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAE4uugdWp7CZ4OQjGP1tAWgcNbYIz5dXI" />
